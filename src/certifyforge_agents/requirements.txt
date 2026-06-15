@@ -1,0 +1,8 @@
+# Runtime requirements for containerized deployment of CertifyForge Reasoning Agents.
+# Core logic is stdlib + local modules. These are for optional real grounding and Azure integration.
+azure-identity==1.19.0
+azure-search-documents==11.6.0
+openai==1.58.1
+# Hosted agent Responses protocol (POST /responses + SSE for Playground Chat).
+azure-ai-agentserver-responses==1.0.0b7
+# azure-ai-inference optional (not required for current LLM path)

@@ -1,0 +1,13 @@
+# Team Certification Performance Patterns (Synthetic)
+
+## Key Insights from Historical Data
+
+- Teams with **weekly study hours > 8** show 35% higher pass rates
+- Engineers with **< 15 meeting hours/week** complete certifications 2x faster
+- Practice test scores **> 80%** correlate strongly with actual exam success
+- Morning study sessions (6-9 AM) show 22% higher retention than evening sessions
+
+## Recommended Team Practices
+- Block 2 focused hours per week per team member
+- Run bi-weekly practice tests as a team
+- Use Microsoft Learn Sandbox for hands-on labs

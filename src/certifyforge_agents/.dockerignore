@@ -1,0 +1,26 @@
+# Ignore unnecessary files for the container image of the CertifyForge agents service.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.git/
+.gitignore
+*.md
+!README.md
+.pytest_cache/
+.mypy_cache/
+.vscode/
+.idea/
+*.log
+*.tmp
+# The data is needed, do not ignore src/data
+# But ignore any large local test outputs
+test_*.json
+*.zip

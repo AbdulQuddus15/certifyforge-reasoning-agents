@@ -1,0 +1,6 @@
+.azure
+venv/
+__pycache__/
+*.pyc
+acr-connection*.json
+acr-conn*.json

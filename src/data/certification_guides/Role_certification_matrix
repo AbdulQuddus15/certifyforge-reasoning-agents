@@ -1,0 +1,16 @@
+# Role to Certification Mapping (Synthetic)
+
+## Cloud Engineer
+- **Primary Certification**: AZ-204 (Developing Solutions for Microsoft Azure)
+- **Secondary Certifications**: AZ-305, AZ-400
+- **Key Skills**: App Service, Functions, Storage, Security, DevOps
+
+## DevOps Engineer
+- **Primary Certification**: AZ-400 (Designing and Implementing Microsoft DevOps Solutions)
+- **Secondary Certifications**: AZ-204, AZ-305
+- **Key Skills**: CI/CD, Infrastructure as Code, Monitoring, GitHub Actions
+
+## Data Engineer
+- **Primary Certification**: DP-600 (Designing and Implementing Microsoft Azure Data Engineering Solutions)
+- **Secondary Certifications**: DP-203, AZ-204, DP-900
+- **Key Skills**: Data Lakehouse, Spark, Data Factory, Synapse, Real-time Analytics

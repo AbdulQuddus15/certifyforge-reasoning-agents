@@ -1,0 +1,4 @@
+[
+  {"employee_id": "EMP-001", "role": "Cloud Engineer", "meeting_hours_per_week": 22, "focus_hours_per_week": 10, "preferred_learning_slot": "Morning"},
+  {"employee_id": "EMP-002", "role": "DevOps Engineer", "meeting_hours_per_week": 15, "focus_hours_per_week": 18, "preferred_learning_slot": "Afternoon"}
+]

@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/microsoft/AgentSchema/refs/heads/main/schemas/v1.0/ContainerAgent.yaml
+kind: hosted
+name: certifyforge-agents
+protocols:
+  - protocol: responses
+    version: 1.0.0
+dockerfilePath: Dockerfile
+# Temporarily commented the image line (again) because the VS Code integrated
+# terminal has trouble showing the azd image-choice prompt (it only appears on
+# up-arrow and vanishes). With the line removed/commented, azd will auto-build
+# a fresh image from the Dockerfile (which now includes readiness_server.py).
+#
+# After a successful `azd deploy`, azd should write the new `image: ...` tag
+# back into this file. You can then un-comment or keep it for the next run.
+# If you want to force a specific image, put the line back with the tag from
+# the successful deploy output.
+#
+# NOTE on "Agent not found" in portal after deploy:
+# The Playground URL that azd prints (and that appears in some portal links) often
+# includes the azd resource project name (e.g. ai-project-creative-app-02-dev) in
+# the path. If AZURE_AI_PROJECT_ENDPOINT points at a different project (ProjectCert),
+# that link 404s with "Agent not found" even though `azd ai agent show` reports the
+# agent as active.
+# Always navigate manually: switch to the ProjectCert project in the portal first,
+# then Build > Agents > certifyforge-agents (from the list). Or just use
+# `azd ai agent invoke` for testing (recommended).
+resources:
+  cpu: '1'
+  memory: 2Gi
+environment_variables:
+  # These ${VAR} are substituted by azd at deploy time from the azd environment
+  # (populated automatically from Bicep outputs after `azd provision`, or manually via `azd env set`).
+  # This is why you don't have to copy/paste literal values from the portal into this file
+  # (unlike in Creative_App_01 where values were hardcoded).
+  # The actual values end up:
+  # - in .azure/<env>/.env (azd state)
+  # - substituted here for the agent definition
+  # - registered as real env vars on the hosted agent (see "Registering agent environment variables" in deploy logs)
+  # - available to your Python code at runtime via os.environ.get("...")
+  - name: AZURE_AI_PROJECT_ENDPOINT
+    value: ${AZURE_AI_PROJECT_ENDPOINT}
+  - name: MODEL_DEPLOYMENT_NAME
+    value: ${MODEL_DEPLOYMENT_NAME}
+  # The current implementation uses these for optional real grounding (Azure AI Search)
+  - name: AZURE_AI_SEARCH_SERVICE_NAME
+    value: ${AZURE_AI_SEARCH_SERVICE_NAME}
+  - name: AZURE_AI_SEARCH_ENDPOINT
+    value: ${AZURE_AI_SEARCH_ENDPOINT}
+  - name: AZURE_AI_SEARCH_INDEX_NAME
+    value: ${AZURE_AI_SEARCH_INDEX_NAME}
+  - name: AZURE_AI_EMBEDDING_DEPLOYMENT_NAME
+    value: ${AZURE_AI_EMBEDDING_DEPLOYMENT_NAME}
+  # Optional keys (set with `azd env set AZURE_SEARCH_ADMIN_KEY <key>` / AZURE_AI_PROJECT_KEY if needed).
+  # When present, enables key_auth in hosted (bypasses MI 403/401 for Search/LLM on Instance Identity).
+  # Empty/absent -> DefaultAzureCredential (MI). azd ${} is single source of truth; local demo parity preserved.
+  # SECURITY: keys reside in container env; prefer pure MI + RBAC grants on runtime principal. Rotate; for prod use Key Vault + MI fetch.
+  - name: AZURE_SEARCH_ADMIN_KEY
+    value: ${AZURE_SEARCH_ADMIN_KEY}
+  - name: AZURE_AI_PROJECT_KEY
+    value: ${AZURE_AI_PROJECT_KEY}
+  # Hosted runtime uses Managed Identity for Search/LLM when no keys (HOSTED_AGENT=1).
+  - name: HOSTED_AGENT
+    value: "1"
+  # Background demo on startup (dev observability). Override to 1 in dev azd env if desired. (Defaulting handled in entrypoint/code for azd ${} consistency.)
+  - name: RUN_DEMO_ON_START
+    value: ${RUN_DEMO_ON_START}
+  # Tune concurrent heavy orchestration runs (1-CPU/2Gi profile defaults to 2).
+  - name: MAX_CONCURRENT_ORCHESTRATIONS
+    value: ${MAX_CONCURRENT_ORCHESTRATIONS=2}
+  # Provide both MODEL_ styles so resolution in foundry_llm.py (which prefers AZURE_AI_ then MODEL_)
+  # always gets a value from the azd-tracked deployments regardless of how azd exposes the name.
+  - name: AZURE_AI_MODEL_DEPLOYMENT_NAME
+    value: ${AZURE_AI_MODEL_DEPLOYMENT_NAME}
+  # (MODEL_DEPLOYMENT_NAME already declared above for older azd / bicep name mapping)
